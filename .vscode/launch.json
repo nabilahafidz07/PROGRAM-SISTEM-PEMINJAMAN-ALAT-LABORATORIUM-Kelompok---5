@@ -3,22 +3,11 @@
   "configurations": [
     {
       "name": "C/C++ Runner: Debug Session",
-      "type": "cppdbg",
+      "type": "lldb",
       "request": "launch",
       "args": [],
-      "stopAtEntry": false,
-      "externalConsole": true,
-      "cwd": "d:/MI 25/2026/PRATIKUM PEMROGRAMAN 1/PROGRAM-SISTEM-PEMINJAMAN-ALAT-LABORATORIUM-Kelompok---5",
-      "program": "d:/MI 25/2026/PRATIKUM PEMROGRAMAN 1/PROGRAM-SISTEM-PEMINJAMAN-ALAT-LABORATORIUM-Kelompok---5/build/Debug/outDebug",
-      "MIMode": "gdb",
-      "miDebuggerPath": "gdb",
-      "setupCommands": [
-        {
-          "description": "Enable pretty-printing for gdb",
-          "text": "-enable-pretty-printing",
-          "ignoreFailures": true
-        }
-      ]
+      "cwd": "/Users/mraisulalkhalil/Desktop/dj/PROGRAM-SISTEM-PEMINJAMAN-ALAT-LABORATORIUM-Kelompok---5",
+      "program": "/Users/mraisulalkhalil/Desktop/dj/PROGRAM-SISTEM-PEMINJAMAN-ALAT-LABORATORIUM-Kelompok---5/build/Debug/outDebug"
     }
   ]
 }
