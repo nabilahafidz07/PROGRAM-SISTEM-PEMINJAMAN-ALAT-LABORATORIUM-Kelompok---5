@@ -18,7 +18,7 @@ int login(char role[]) {
 
     while (fscanf(fp, "%[^,],%[^,],%s\n", fileUser, filePass, fileRole) != EOF) {
         if (strcmp(username, fileUser) == 0 && strcmp(password, filePass) == 0) {
-            strcpy(role, fileRole); // kirim role ke main
+            strcpy(role, fileRole); 
             fclose(fp);
             return 1;
         }
