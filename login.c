@@ -16,9 +16,9 @@ int login(char role[]) {
     printf("Password: ");
     scanf("%s", password);
 
-    while (fscanf(fp, "%[^,],%[^,],%s\n", fileUser, filePass, fileRole) != EOF) {
+    while (fscanf(fp, "%s %s %s", fileUser, filePass, fileRole) != EOF) {
         if (strcmp(username, fileUser) == 0 && strcmp(password, filePass) == 0) {
-            strcpy(role, fileRole); 
+            strcpy(role, fileRole);
             fclose(fp);
             return 1;
         }
