@@ -1,0 +1,7 @@
+Laptop|10
+Kabel|5
+Proyektor|3
+Mouse|10
+Flashdisk|5
+Harddisk Eksternal|3
+Charger Laptop|10
