@@ -16,10 +16,10 @@ void menuAdmin() {
 
         switch (pilihan) {
             case 1:
-                tambahAlat();   // 🔥 panggil fungsi
+                tambahAlat();   
                 break;
             case 2:
-                tampilAlat();   // 🔥 panggil fungsi
+                tampilAlat();   
                 break;
             case 3:
                 printf("Keluar dari menu admin...\n");
@@ -46,13 +46,13 @@ void menuUser(char username[]) {
 
         switch (pilihan) {
             case 1:
-                pinjamAlat(username);        // 🔥 beda dari admin
+                pinjamAlat(username);     
                 break;
             case 2:
-                kembalikanAlat(username);    // 🔥 beda dari admin
+                kembalikanAlat(username);    
                 break;
             case 3:
-                lihatPinjaman(username);     // 🔥 tambahan
+                lihatPinjaman(username);    
                 break;
             case 4:
                 printf("Keluar dari menu user...\n");

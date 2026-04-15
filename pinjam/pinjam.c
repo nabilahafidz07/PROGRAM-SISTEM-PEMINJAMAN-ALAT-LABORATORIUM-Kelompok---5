@@ -19,7 +19,7 @@ void pinjamAlat(char username[]) {
     printf("Jumlah pinjam: ");
     scanf("%d", &jumlah);
 
-    // 🔥 tambah status
+    //  tambah status
     fprintf(fp, "%s,%d,%d,dipinjam\n", username, id, jumlah);
 
     fclose(fp);
@@ -70,7 +70,7 @@ void kembalikanAlat(char username[]) {
         if (strcmp(user, username) == 0 && id == idkembali && strcmp(status, "dipinjam") == 0) {
             ditemukan = 1;
 
-            // 🔥 ubah jadi dikembalikan
+            // ubah jadi dikembalikan
             fprintf(temp, "%s,%d,%d,dikembalikan\n", user, id, jumlah);
         } else {
             fprintf(temp, "%s,%d,%d,%s\n", user, id, jumlah, status);
