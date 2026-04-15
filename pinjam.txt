@@ -2,4 +2,5 @@ syifa,1,1,dikembalikan
 dwiky,3,2,dikembalikan
 raisul,2,1,dikembalikan
 nabila,3,1,dipinjam
-dwiky,3,2,dipinjam
+dwiky,3,2,dikembalikan
+dwiky,2,1,dipinjam
