@@ -1,32 +1,25 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
+#include "header/login.h"
+#include "header/menu.h"
 
-
-int login(char role[]);
-void menuAdmin();
-void menuUser();
-
-int main(int argc, char *argv[]) {
+int main() {
+    char username[50];
     char role[10];
     int status;
-    int def;
 
-    status = login(role);
+    status = login(username, role);
 
     if (status == 0) {
         printf("Login gagal!\n");
         return 0;
     }
 
-    // cek role
     if (strcmp(role, "admin") == 0) {
         menuAdmin();
     } else {
-        menuUser();
+        menuUser(username);
     }
 
     return 0;
 }
-
-
-

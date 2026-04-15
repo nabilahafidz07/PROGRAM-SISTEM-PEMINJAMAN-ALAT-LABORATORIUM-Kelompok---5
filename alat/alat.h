@@ -14,5 +14,6 @@ void tambahAlat();
 void tampilAlat();
 void hapusAlat();
 void editAlat();
+void login(char role[]);
 
 #endif

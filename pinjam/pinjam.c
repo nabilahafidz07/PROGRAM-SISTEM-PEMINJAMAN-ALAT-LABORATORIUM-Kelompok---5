@@ -3,88 +3,88 @@
 #include <stdlib.h>
 #include "pinjam.h"
 
-//pinjaman alat
+/* pinjam alat berdasarkan username yang lagi login */
 void pinjamAlat(char username[]) {
-FILE *fp = fopen("pinjam.txt", "a");
-if (fp == NULL) {
-    printf("file tidak bisa dibuka!\n");
-    return;
-}
-
-int id, jumlah;
-
-printf("Masukkan ID alat: ");
-scanf("%d", &id);
-
-printf("jumlah pinjam: ");
-scanf("%d", &jumlah);
-
-fprintf(fp, "%s,%d,%d\n", username, id, jumlah);
-fclose(fp);
-printf("alat berhasil dipinjam!\n");
-}
-
-//Lihat Pinjaman
-void lihatPinjaman(char username[]) {
-FILE *fp = fopen("pinjam.txt", "r");
-
-if (fp == NULL) {
-    printf("belum ada data pinjaman!\n");
-    return;
-}
-
-char user[50];
-int id, jumlah;
-
-printf("\n=== Daftar Pinjaman ===\n");
-
-while (fscanf(fp, "%[^,],%d,%d\n", user, &id, &jumlah) != EOF) {
-    if (strcmp(user, username) == 0) {
-        printf("ID Alat: %d, Jumlah: %d\n", id, jumlah);
-    } 
-}
-fclose(fp);
-}
-
-//Kembalikan Alat
-void kembalikanAlat(char username[]) {
-    FILE *fp = fopen("pinjam.txt", "r");
-    FILE *temp = fopen("temp.txt", "w");
-
-    if (fp == NULL || temp == NULL) {
-        printf("file error!\n");
+    FILE *fp = fopen("pinjam.txt", "a");
+    if (fp == NULL) {
+        printf("Gagal buka file, coba lagi.\n");
         return;
     }
 
-    char user[50];
+    int id, jumlah;
+
+    printf("ID alat: ");
+    scanf("%d", &id);
+
+    printf("Jumlah pinjam: ");
+    scanf("%d", &jumlah);
+
+    // 🔥 tambah status
+    fprintf(fp, "%s,%d,%d,dipinjam\n", username, id, jumlah);
+
+    fclose(fp);
+    printf("Oke, alat sudah tercatat sebagai dipinjam.\n");
+}
+
+/* tampilkan semua pinjaman milik username ini */
+void lihatPinjaman(char username[]) {
+    FILE *fp = fopen("pinjam.txt", "r");
+    if (fp == NULL) {
+        printf("Belum ada data pinjaman.\n");
+        return;
+    }
+
+    char user[50], status[20];
+    int id, jumlah;
+
+    printf("\n=== Daftar Pinjaman ===\n");
+
+    while (fscanf(fp, "%[^,],%d,%d,%[^ \n]\n", user, &id, &jumlah, status) != EOF) {
+        if (strcmp(user, username) == 0) {
+            printf("ID Alat: %d | Jumlah: %d | Status: %s\n", id, jumlah, status);
+        }
+    }
+
+    fclose(fp);
+}
+
+/* hapus record pinjaman setelah alat dikembalikan */
+void kembalikanAlat(char username[]) {
+    FILE *fp   = fopen("pinjam.txt", "r");
+    FILE *temp = fopen("temp.txt", "w");
+
+    if (fp == NULL || temp == NULL) {
+        printf("Gagal buka file.\n");
+        return;
+    }
+
+    char user[50], status[20];
     int id, jumlah, idkembali;
     int ditemukan = 0;
 
-    printf("Masukkan ID alat yang ingin dikembalikan: ");
+    printf("ID alat yang mau dikembalikan: ");
     scanf("%d", &idkembali);
 
-    printf("Masukkan ID alat yang ingin dikembalikan: ");
-    scanf("%d", &idkembali);
+    while (fscanf(fp, "%[^,],%d,%d,%[^ \n]\n", user, &id, &jumlah, status) != EOF) {
 
-    while (fscanf(fp, "%[^,],%d,%d\n", user, &id, &jumlah) != EOF) {
-        if (strcmp(user, username) == 0 && id == idkembali) {
+        if (strcmp(user, username) == 0 && id == idkembali && strcmp(status, "dipinjam") == 0) {
             ditemukan = 1;
-            continue; // skip data (hapus)
 
+            // 🔥 ubah jadi dikembalikan
+            fprintf(temp, "%s,%d,%d,dikembalikan\n", user, id, jumlah);
+        } else {
+            fprintf(temp, "%s,%d,%d,%s\n", user, id, jumlah, status);
         }
-        fprintf(temp, "%s,%d,%d\n", user, id, jumlah); 
     }
+
     fclose(fp);
     fclose(temp);
 
     remove("pinjam.txt");
     rename("temp.txt", "pinjam.txt");
 
-    if (ditemukan) {
-        printf("alat berhasil dikembalikan!\n");
-    } else {
-        printf("data tidak ditemukan!\n");
-
-    }
-    
+    if (ditemukan)
+        printf("Alat sudah dikembalikan.\n");
+    else
+        printf("Data tidak ditemukan atau sudah dikembalikan.\n");
 }

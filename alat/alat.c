@@ -3,118 +3,109 @@
 #include <string.h>
 #include "alat.h"
 
-#define FILE_NAME "data_alat.txt"
+#define FILE_DATA "data_alat.txt"
+#define FILE_TEMP "temp.txt"
+
+void inputAlat(Alat *a, int dengan_id) {
+    if (dengan_id) {
+        printf("ID: ");
+        scanf("%u", &a->id);
+    }
+    printf("Nama: "); scanf(" %[^\n]", a->nama);
+    printf("Merek: "); scanf(" %[^\n]", a->merek);
+    printf("Model: "); scanf(" %[^\n]", a->model);
+    printf("Tahun: "); scanf("%u", &a->tahun);
+    printf("Jumlah: "); scanf("%u", &a->jumlah);
+}
+
+int bacaAlat(FILE *fp, Alat *a) {
+    return fscanf(fp, "%u|%[^|]|%[^|]|%[^|]|%u|%u\n",
+                  &a->id, a->nama, a->merek, a->model, 
+                  &a->tahun, &a->jumlah) != EOF;
+}
+
+void simpanAlat(FILE *fp, Alat *a) {
+    fprintf(fp, "%u|%s|%s|%s|%u|%u\n",
+            a->id, a->nama, a->merek, a->model, a->tahun, a->jumlah);
+}
 
 void tambahAlat() {
-    FILE *fp = fopen(FILE_NAME, "a");
+    FILE *fp = fopen(FILE_DATA, "a");
     Alat a;
-
-    printf("ID: "); scanf("%u", &a.id);
-    printf("Nama: "); scanf(" %[^\n]", a.nama);
-    printf("Merek: "); scanf(" %[^\n]", a.merek);
-    printf("Model: "); scanf(" %[^\n]", a.model);
-    printf("Tahun: "); scanf("%u", &a.tahun);
-    printf("Jumlah: "); scanf("%u", &a.jumlah);
-
-    fprintf(fp, "%u|%s|%s|%s|%u|%u\n",
-            a.id, a.nama, a.merek, a.model, a.tahun, a.jumlah);
-
+    
+    inputAlat(&a, 1);
+    simpanAlat(fp, &a);
     fclose(fp);
+    
     printf("Data berhasil ditambah!\n");
 }
 
 void tampilAlat() {
-    FILE *fp = fopen(FILE_NAME, "r");
+    FILE *fp = fopen(FILE_DATA, "r");
     Alat a;
 
-    if (fp == NULL) {
+    if (!fp) {
         printf("Data kosong!\n");
         return;
     }
 
     printf("\n=== DATA ALAT ===\n");
-
-    while (fscanf(fp, "%u|%[^|]|%[^|]|%[^|]|%u|%u\n",
-                  &a.id, a.nama, a.merek, a.model, &a.tahun, &a.jumlah) != EOF) {
-
-        printf("ID: %u\nNama: %s\nMerek: %s\nModel: %s\nTahun: %u\nJumlah: %u\n\n",
+    while (bacaAlat(fp, &a)) {
+        printf("ID: %u | %s | %s | %s | %u | %u\n",
                a.id, a.nama, a.merek, a.model, a.tahun, a.jumlah);
     }
-
     fclose(fp);
 }
 
 void hapusAlat() {
-    FILE *fp = fopen(FILE_NAME, "r");
-    FILE *temp = fopen("temp.txt", "w");
-
+    FILE *fp = fopen(FILE_DATA, "r");
+    FILE *tmp = fopen(FILE_TEMP, "w");
     Alat a;
     unsigned int id;
-    int found = 0;
+    int ketemu = 0;
 
-    printf("Masukkan ID yang ingin dihapus: ");
+    printf("ID yg mau dihapus: ");
     scanf("%u", &id);
 
-    while (fscanf(fp, "%u|%[^|]|%[^|]|%[^|]|%u|%u\n",
-                  &a.id, a.nama, a.merek, a.model, &a.tahun, &a.jumlah) != EOF) {
-
-        if (a.id != id) {
-            fprintf(temp, "%u|%s|%s|%s|%u|%u\n",
-                    a.id, a.nama, a.merek, a.model, a.tahun, a.jumlah);
+    while (bacaAlat(fp, &a)) {
+        if (a.id == id) {
+            ketemu = 1;
         } else {
-            found = 1;
+            simpanAlat(tmp, &a);
         }
     }
 
     fclose(fp);
-    fclose(temp);
+    fclose(tmp);
+    remove(FILE_DATA);
+    rename(FILE_TEMP, FILE_DATA);
 
-    remove(FILE_NAME);
-    rename("temp.txt", FILE_NAME);
-
-    if (found)
-        printf("Data berhasil dihapus!\n");
-    else
-        printf("ID tidak ditemukan!\n");
+    printf(ketemu ? "Dihapus!\n" : "ID ga ada!\n");
 }
 
 void editAlat() {
-    FILE *fp = fopen(FILE_NAME, "r");
-    FILE *temp = fopen("temp.txt", "w");
-
+    FILE *fp = fopen(FILE_DATA, "r");
+    FILE *tmp = fopen(FILE_TEMP, "w");
     Alat a;
     unsigned int id;
-    int found = 0;
+    int ketemu = 0;
 
-    printf("Masukkan ID yang ingin diedit: ");
+    printf("ID yg mau diedit: ");
     scanf("%u", &id);
 
-    while (fscanf(fp, "%u|%[^|]|%[^|]|%[^|]|%u|%u\n",
-                  &a.id, a.nama, a.merek, a.model, &a.tahun, &a.jumlah) != EOF) {
-
+    while (bacaAlat(fp, &a)) {
         if (a.id == id) {
-            found = 1;
-            printf("Data baru:\n");
-
-            printf("Nama: "); scanf(" %[^\n]", a.nama);
-            printf("Merek: "); scanf(" %[^\n]", a.merek);
-            printf("Model: "); scanf(" %[^\n]", a.model);
-            printf("Tahun: "); scanf("%u", &a.tahun);
-            printf("Jumlah: "); scanf("%u", &a.jumlah);
+            ketemu = 1;
+            printf("Masukkan data baru:\n");
+            inputAlat(&a, 0);
         }
-
-        fprintf(temp, "%u|%s|%s|%s|%u|%u\n",
-                a.id, a.nama, a.merek, a.model, a.tahun, a.jumlah);
+        simpanAlat(tmp, &a);
     }
 
     fclose(fp);
-    fclose(temp);
+    fclose(tmp);
+    remove(FILE_DATA);
+    rename(FILE_TEMP, FILE_DATA);
 
-    remove(FILE_NAME);
-    rename("temp.txt", FILE_NAME);
-
-    if (found)
-        printf("Data berhasil diedit!\n");
-    else
-        printf("ID tidak ditemukan!\n");
+    printf(ketemu ? "Diedit!\n" : "ID ga ada!\n");
 }

@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "alat.h"
+#include "header/menu.h"
+#include "header/login.h"
 
 int main() {
     int pilih;
