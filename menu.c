@@ -10,25 +10,33 @@ void menuAdmin() {
         printf("\n=== MENU ADMIN ===\n");
         printf("1. Tambah Alat\n");
         printf("2. Lihat Alat\n");
-        printf("3. Keluar\n");
+        printf("3. Edit Alat\n");     
+        printf("4. Hapus Alat\n");    
+        printf("5. Keluar\n");
         printf("Pilih: ");
         scanf("%d", &pilihan);
 
         switch (pilihan) {
             case 1:
-                tambahAlat();   
+                tambahAlat();
                 break;
             case 2:
-                tampilAlat();   
+                tampilAlat();
                 break;
             case 3:
+                editAlat();   
+                break;
+            case 4:
+                hapusAlat();  
+                break;
+            case 5:
                 printf("Keluar dari menu admin...\n");
                 break;
             default:
                 printf("Pilihan tidak valid!\n");
         }
 
-    } while (pilihan != 3);
+    } while (pilihan != 5);
 }
 
 

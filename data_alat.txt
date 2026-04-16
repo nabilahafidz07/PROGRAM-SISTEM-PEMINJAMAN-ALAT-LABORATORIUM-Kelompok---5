@@ -1,3 +1,3 @@
-1|Laptop|asus|vivobook|2020|5
-2|Monitor|LG|25inch|2020|2
-3|PC|Ryzen |Amd 2000|2025|5
+1|laptop|asus|intel|2020|5
+2|proyektor|epson|infocus|2020|5
+3|mouse|logitech|wireless|2020|5
